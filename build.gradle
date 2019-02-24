@@ -1,0 +1,104 @@
+buildscript {
+	ext {
+		kotlinVersion = '1.3.21'
+		springBootVersion = '2.1.2.RELEASE'
+		dagger_version = '2.11'
+	}
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+	}
+}
+
+apply plugin: "kotlin-allopen"
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'kotlin-jpa'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'idea'
+apply plugin: 'kotlin-kapt'
+
+group = 'br.com.blog'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.9'
+
+repositories {
+	mavenCentral()
+}
+
+ext{
+	junitVersion = '5.3.2'
+	junitLaucherVersion ='1.3.2'
+}
+
+test{
+	useJUnitPlatform()
+	dependsOn 'cleanTest'
+
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+	afterTest { desc, result ->
+		logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+	}
+	testLogging {
+		exceptionFormat = 'full'
+	}
+}
+
+dependencies {
+
+	kapt "org.hibernate:hibernate-jpamodelgen"
+	kaptTest "org.hibernate:hibernate-jpamodelgen"
+	implementation "org.hibernate:hibernate-jpamodelgen"
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+	implementation 'org.flywaydb:flyway-core'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+	implementation "org.jetbrains.kotlin:kotlin-reflect"
+
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	testImplementation ("org.springframework.boot:spring-boot-starter-test"){
+		exclude module: "junit"
+	}
+	testCompile "com.h2database:h2:1.4.197"
+	testCompile "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+	testCompile "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+	testCompile "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
+	testCompile "org.junit.platform:junit-platform-launcher:${junitLaucherVersion}"
+}
+
+compileKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ['-Xjsr305=strict']
+		jvmTarget = '1.8'
+	}
+}
+
+compileTestKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ['-Xjsr305=strict']
+		jvmTarget = '1.8'
+	}
+}
+
+idea {
+	module {
+		def kaptMain = file('build/generated/source/kapt/main')
+		sourceDirs += kaptMain
+		generatedSourceDirs += kaptMain
+	}
+}
