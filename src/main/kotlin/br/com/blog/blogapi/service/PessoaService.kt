@@ -17,9 +17,7 @@ class PessoaService {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun excluir(codigoPessoa: Long){
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    fun excluir(codigoPessoa: Long) = pessoaRepository.deleteById(codigoPessoa)
 
     fun atualizar(dto: PessoaAtualizarDTO): PessoaDetalhesDTO{
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

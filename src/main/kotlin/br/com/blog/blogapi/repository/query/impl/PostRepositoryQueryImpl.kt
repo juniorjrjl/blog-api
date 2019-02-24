@@ -8,6 +8,8 @@ import br.com.blog.blogapi.model.Post_
 import br.com.blog.blogapi.model.Tag_
 import br.com.blog.blogapi.repository.query.PostRepositoryQuery
 import br.com.blog.blogapi.repository.query.filtro.PostListagemFiltro
+import br.com.blog.blogapi.repository.query.util.Paginacao
+import br.com.blog.blogapi.repository.query.util.Paginacao.Companion.montarPaginacao
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -71,7 +73,7 @@ open class PostRepositoryQueryImpl: PostRepositoryQuery {
         criteria.where(*(predicates as List<Predicate>).toTypedArray())
         criteria.orderBy(if (filtro.dataCriacaoDecrescente) builder.desc(root[Post_.dataCriacao]) else builder.asc(root[Post_.dataCriacao]))
         val query : TypedQuery<PostListagemDTO> = entityManager.createQuery(criteria)
-        montarPaginacao(query, paginavel)
+        Paginacao.montarPaginacao(query, paginavel)
         var dto : List<PostListagemDTO>
         try{
             dto = query.resultList
@@ -89,14 +91,6 @@ open class PostRepositoryQueryImpl: PostRepositoryQuery {
         criteria.select(builder.count(root[Post_.codigo]))
         criteria.where(*predicates)
         return entityManager.createQuery(criteria).singleResult
-    }
-
-    private fun montarPaginacao(query: TypedQuery<*>, paginavel: Pageable){
-        val paginaAtual = paginavel.pageNumber
-        val registosPorPagina = paginavel.pageSize
-        val primeiroregistro = paginaAtual * registosPorPagina
-        query.firstResult = primeiroregistro
-        query.maxResults = registosPorPagina
     }
 
 }
