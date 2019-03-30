@@ -33,6 +33,7 @@ data class Pessoa (
         @Size(min = 8, max = 40)
         var senha : String
 ){
+    constructor() :this("", "", "")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var codigo : Long = 0

@@ -1,5 +1,6 @@
 package br.com.blog.blogapi.service
 
+import br.com.blog.blogapi.config.mapper.PostConverter
 import br.com.blog.blogapi.dto.PostAtualizarDTO
 import br.com.blog.blogapi.dto.PostCadastrarDTO
 import br.com.blog.blogapi.dto.PostDetalhesDTO
@@ -16,22 +17,23 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
-class PostService {
+class PostService
+@Autowired constructor(
+        private val postRepository: PostRepository,
+        private val tagRepository: TagRepository,
+        private val postConverter: PostConverter
+) {
 
-    @Autowired
-    lateinit var postRepository: PostRepository
-
-    @Autowired
-    lateinit var tagRepository: TagRepository
 
     fun cadastrar(dto: PostCadastrarDTO): PostDetalhesDTO {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var post = postRepository.save(postConverter.DTOToModel(dto))
+        return buscarPorCodigo(post.codigo)!!
     }
 
     fun excluir (codigoPost: Long) = postRepository.deleteById(codigoPost)
 
     fun atualizar(dto: PostAtualizarDTO): PostDetalhesDTO {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return buscarPorCodigo(dto.codigo)!!
     }
 
     fun buscarPorCodigo(codigoPost: Long): PostDetalhesDTO?{

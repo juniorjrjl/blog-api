@@ -34,6 +34,7 @@ data class Post (
         @JoinColumn(name = "codigo_pessoa")
         var pessoa: Pessoa
 ){
+    constructor() :this("", "", Pessoa())
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var codigo : Long = 0

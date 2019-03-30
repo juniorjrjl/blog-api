@@ -20,6 +20,7 @@ data class Tag (
         var descricao: String
 
 ){
+    constructor() :this("")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var codigo : Long = 0

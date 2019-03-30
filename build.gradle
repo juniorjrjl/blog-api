@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		kotlinVersion = '1.3.21'
-		springBootVersion = '2.1.2.RELEASE'
+		springBootVersion = '2.1.3.RELEASE'
 		dagger_version = '2.11'
 	}
 	repositories {
@@ -37,6 +37,9 @@ repositories {
 ext{
 	junitVersion = '5.3.2'
 	junitLaucherVersion ='1.3.2'
+	versaoMockito = '2.25.1'
+	versaoMockitoKotlin = '2.1.0'
+	versaoMockitoInline = '2.25.1'
 }
 
 test{
@@ -58,7 +61,11 @@ dependencies {
 
 	kapt "org.hibernate:hibernate-jpamodelgen"
 	kaptTest "org.hibernate:hibernate-jpamodelgen"
-	implementation "org.hibernate:hibernate-jpamodelgen"
+	compile "org.hibernate:hibernate-jpamodelgen"
+
+	kapt 'org.mapstruct:mapstruct-processor:1.3.0.Final'
+	kaptTest 'org.mapstruct:mapstruct-processor:1.3.0.Final'
+	compile 'org.mapstruct:mapstruct:1.3.0.Final'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -79,6 +86,16 @@ dependencies {
 	testCompile "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 	testCompile "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
 	testCompile "org.junit.platform:junit-platform-launcher:${junitLaucherVersion}"
+	testCompile "org.mockito:mockito-core:${versaoMockito}"
+	testCompile "org.mockito:mockito-junit-jupiter:${versaoMockito}"
+	testCompile "com.nhaarman.mockitokotlin2:mockito-kotlin:${versaoMockitoKotlin}"
+	testCompile "org.mockito:mockito-inline:${versaoMockitoInline}"
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs = [
+			'-Amapstruct.suppressGeneratorTimestamp=true'
+	]
 }
 
 compileKotlin {
