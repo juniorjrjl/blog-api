@@ -26,27 +26,55 @@ class PostService
 
 
     fun cadastrar(dto: PostCadastrarDTO): PostDetalhesDTO {
-        var post = postRepository.save(postConverter.DTOToModel(dto))
-        return buscarPorCodigo(post.codigo)!!
+        val dtoRetorno: PostDetalhesDTO
+        try{
+            val post = postRepository.save(postConverter.DTOToModel(dto))
+            dtoRetorno = buscarPorCodigo(post.codigo)!!
+        }catch (e: Exception){
+            throw e
+        }
+        return dtoRetorno
     }
 
-    fun excluir (codigoPost: Long) = postRepository.deleteById(codigoPost)
+    fun excluir (codigoPost: Long) {
+        try{
+            postRepository.deleteById(codigoPost)
+        }catch (e: Exception){
+            throw e
+        }
+    }
 
     fun atualizar(dto: PostAtualizarDTO): PostDetalhesDTO {
-        return buscarPorCodigo(dto.codigo)!!
+        val dtoRetorno : PostDetalhesDTO
+        try{
+            dtoRetorno = buscarPorCodigo(dto.codigo)!!
+        }catch (e: Exception){
+            throw e
+        }
+        return dtoRetorno
     }
 
     fun buscarPorCodigo(codigoPost: Long): PostDetalhesDTO?{
-        val dto : PostDetalhesDTO? = postRepository.buscarPorCodigo(codigoPost)
-        if (dto != null){
-            dto.tags = tagRepository.buscarTagsPost(dto.codigo)
+        val dto : PostDetalhesDTO?
+        try{
+            dto  = postRepository.buscarPorCodigo(codigoPost)
+            if (dto != null){
+                dto.tags = tagRepository.buscarTagsPost(dto.codigo)
+            }
+        }catch (e: Exception){
+            throw e
         }
         return dto
     }
 
     fun listagem(filtro: PostListagemFiltro, paginavel: Pageable): Page<PostListagemDTO>{
-        val dto : Page<PostListagemDTO> = postRepository.listagem(filtro, paginavel)
-        dto.forEach{it.tags = tagRepository.buscarTagsPost(it.codigo)}
+        val dto : Page<PostListagemDTO>
+        try{
+            dto = postRepository.listagem(filtro, paginavel)
+            dto.forEach{it.tags = tagRepository.buscarTagsPost(it.codigo)}
+        }catch (e: Exception){
+            throw e
+        }
         return dto
     }
 

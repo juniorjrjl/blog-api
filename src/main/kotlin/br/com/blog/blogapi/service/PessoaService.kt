@@ -16,13 +16,27 @@ class PessoaService
 ) {
 
     fun cadastrar(dto: PessoaCadastrarDTO){
-        pessoaRepository.save(pessoaConverter.DTOToModel(dto))
+        try{
+            pessoaRepository.save(pessoaConverter.DTOToModel(dto))
+        }catch (e: Exception){
+            throw e
+        }
     }
 
-    fun excluir(codigoPessoa: Long) = pessoaRepository.deleteById(codigoPessoa)
+    fun excluir(codigoPessoa: Long) {
+        try{
+            pessoaRepository.deleteById(codigoPessoa)
+        }catch (e: Exception){
+            throw e
+        }
+    }
 
     fun atualizar(dto: PessoaAtualizarDTO){
-        pessoaRepository.atualizar(dto)
+        try{
+            pessoaRepository.atualizar(dto)
+        }catch (e: Exception){
+            throw e
+        }
     }
 
 }

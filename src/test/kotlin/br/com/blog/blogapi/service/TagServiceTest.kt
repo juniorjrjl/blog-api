@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -41,7 +42,10 @@ class `Verificando classe de servico da Tag` {
         whenever(tagRepository.save(tag.capture())).thenReturn(Tag())
         whenever(tagRepository.buscarPorCodigo(any())).thenReturn(TagDetalhesDTO(1, "teste"))
         tagService.cadastrar(TagCadastrarDTO(descricao))
-        assertEquals(descricao, tag.firstValue.descricao)
+        val tagObtida = tag.firstValue
+        assertEquals(descricao, tagObtida.descricao)
+        assertEquals(0L, tagObtida.codigo)
+        assertTrue(tagObtida.posts.isEmpty())
     }
 
 }
