@@ -18,54 +18,41 @@ class TagService
         private val tagConverter: TagConverter
 ){
 
-    fun cadastrar(dto: TagCadastrarDTO): TagDetalhesDTO {
-        val dtoRetorno : TagDetalhesDTO
-        try {
-            val tag = tagRepository.save(tagConverter.DTOToModel(dto))
-            dtoRetorno = buscarPorCodigo(tag.codigo)
-        }catch (e: Exception){
-            throw e
-        }
-        return dtoRetorno
-    }
+    fun cadastrar(dto: TagCadastrarDTO): TagDetalhesDTO =
+            try {
+                val tag = tagRepository.save(tagConverter.DTOToModel(dto))
+                buscarPorCodigo(tag.codigo)
+            }catch (e: Exception){
+                throw e
+            }
 
-    fun excluir (codigoTag: Long){
-        try {
-            tagRepository.deleteById(codigoTag)
-        }catch (e: Exception){
-            throw e
-        }
-    }
+    fun excluir (codigoTag: Long) =
+            try {
+                tagRepository.deleteById(codigoTag)
+            }catch (e: Exception){
+                throw e
+            }
 
-    fun atualizar(dto: TagAtualizarDTO): TagDetalhesDTO {
-        val dtoRetorno : TagDetalhesDTO
-        try {
-            tagRepository.atualizar(dto)
-            dtoRetorno = buscarPorCodigo(dto.codigo)
-        }catch (e: Exception){
-            throw e
-        }
-        return dtoRetorno
-    }
+    fun atualizar(dto: TagAtualizarDTO): TagDetalhesDTO =
+            try {
+                tagRepository.atualizar(dto)
+                buscarPorCodigo(dto.codigo)
+            }catch (e: Exception){
+                throw e
+            }
 
-    fun buscarPorCodigo(codigoTag: Long): TagDetalhesDTO {
-        val dtoRetorno : TagDetalhesDTO
-        try {
-            dtoRetorno = tagRepository.buscarPorCodigo(codigoTag)
-        }catch (e: Exception){
-            throw e
-        }
-        return dtoRetorno
-    }
+    fun buscarPorCodigo(codigoTag: Long): TagDetalhesDTO  =
+            try {
+                tagRepository.buscarPorCodigo(codigoTag)
+            }catch (e: Exception){
+                throw e
+            }
 
-    fun listagem(paginavel: Pageable): Page<TagListagem> {
-        val dto: Page<TagListagem>
-        try{
-            dto = tagRepository.listagem(paginavel)
-        }catch (e: Exception){
-            throw e
-        }
-        return dto
-    }
+    fun listagem(pageable: Pageable): Page<TagListagem> =
+            try{
+                tagRepository.listagem(pageable)
+            }catch (e: Exception){
+                throw e
+            }
 
 }

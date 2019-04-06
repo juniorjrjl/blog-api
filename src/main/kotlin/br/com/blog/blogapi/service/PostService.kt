@@ -25,57 +25,46 @@ class PostService
 ) {
 
 
-    fun cadastrar(dto: PostCadastrarDTO): PostDetalhesDTO {
-        val dtoRetorno: PostDetalhesDTO
-        try{
-            val post = postRepository.save(postConverter.DTOToModel(dto))
-            dtoRetorno = buscarPorCodigo(post.codigo)!!
-        }catch (e: Exception){
-            throw e
-        }
-        return dtoRetorno
-    }
-
-    fun excluir (codigoPost: Long) {
-        try{
-            postRepository.deleteById(codigoPost)
-        }catch (e: Exception){
-            throw e
-        }
-    }
-
-    fun atualizar(dto: PostAtualizarDTO): PostDetalhesDTO {
-        val dtoRetorno : PostDetalhesDTO
-        try{
-            dtoRetorno = buscarPorCodigo(dto.codigo)!!
-        }catch (e: Exception){
-            throw e
-        }
-        return dtoRetorno
-    }
-
-    fun buscarPorCodigo(codigoPost: Long): PostDetalhesDTO?{
-        val dto : PostDetalhesDTO?
-        try{
-            dto  = postRepository.buscarPorCodigo(codigoPost)
-            if (dto != null){
-                dto.tags = tagRepository.buscarTagsPost(dto.codigo)
+    fun cadastrar(dto: PostCadastrarDTO): PostDetalhesDTO  =
+            try{
+                val post = postRepository.save(postConverter.DTOToModel(dto))
+                buscarPorCodigo(post.codigo)!!
+            }catch (e: Exception){
+                throw e
             }
-        }catch (e: Exception){
-            throw e
-        }
-        return dto
-    }
 
-    fun listagem(filtro: PostListagemFiltro, paginavel: Pageable): Page<PostListagemDTO>{
-        val dto : Page<PostListagemDTO>
-        try{
-            dto = postRepository.listagem(filtro, paginavel)
-            dto.forEach{it.tags = tagRepository.buscarTagsPost(it.codigo)}
-        }catch (e: Exception){
-            throw e
-        }
-        return dto
-    }
+    fun excluir (codigoPost: Long) =
+            try{
+                postRepository.deleteById(codigoPost)
+            }catch (e: Exception){
+                throw e
+            }
+
+    fun atualizar(dto: PostAtualizarDTO): PostDetalhesDTO  =
+            try{
+                buscarPorCodigo(dto.codigo)!!
+            }catch (e: Exception){
+                throw e
+            }
+
+    fun buscarPorCodigo(codigoPost: Long): PostDetalhesDTO? =
+            try{
+                val dto  = postRepository.buscarPorCodigo(codigoPost)
+                if (dto != null){
+                    dto.tags = tagRepository.buscarTagsPost(dto.codigo)
+                }
+                dto
+            }catch (e: Exception){
+                throw e
+            }
+
+    fun listagem(filtro: PostListagemFiltro, paginavel: Pageable): Page<PostListagemDTO> =
+            try{
+                val dto = postRepository.listagem(filtro, paginavel)
+                dto.forEach{it.tags = tagRepository.buscarTagsPost(it.codigo)}
+                dto
+            }catch (e: Exception){
+                throw e
+            }
 
 }
