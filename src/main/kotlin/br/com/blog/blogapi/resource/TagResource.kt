@@ -45,7 +45,7 @@ class TagResource
     @PutMapping
     fun atualizar(@Valid @RequestBody dto: TagAtualizarDTO): ResponseEntity<TagDetalhesDTO> =
             try{
-                ResponseEntity.status(HttpStatus.CREATED).body(tagService.atualizar(dto))
+                ResponseEntity.ok(tagService.atualizar(dto))
             }catch (e: Exception){
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
             }
