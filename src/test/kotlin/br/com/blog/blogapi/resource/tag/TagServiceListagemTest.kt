@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MvcResult
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import java.util.stream.Collectors
 import java.util.stream.Stream
 
@@ -42,11 +43,15 @@ class `Teste do endpoint de listagem Tags`() : AbstractTagServiceTest() {
     }
 
     @Test
-    fun `Quando buscar registros existenter, retorna-los`(){
+    fun `Quando buscar registros existentes, retorna-los`(){
         val result: MvcResult =  mockMvc.perform(get(urlConsulta)
                 .param("page", "1")
                 .param("size", "10")
                 .accept(MediaType.APPLICATION_JSON))
+                .andDo {
+                    MockMvcResultHandlers.print()
+                    var teste = it
+                }
                 .andExpect(status().isOk)
                 .andReturn()
         assertTrue(result.response.contentAsString.contains(""""codigo":1,"""))

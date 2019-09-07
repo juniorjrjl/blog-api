@@ -9,6 +9,6 @@ import org.springframework.data.domain.Pageable
 interface PostRepositoryQuery {
 
     fun buscarPorCodigo(codigoPost: Long): PostDetalhesDTO?
-    fun listagem(filtro: PostListagemFiltro, pagable: Pageable): Page<PostListagemDTO>
+    fun listagem(filtro: PostListagemFiltro, paginavel: Pageable): Page<PostListagemDTO>
 
 }

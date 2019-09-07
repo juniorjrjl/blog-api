@@ -7,19 +7,12 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToMany
 import javax.persistence.Table
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "tags")
 data class Tag (
-
         @Column(nullable = false, length = 140)
-        @NotNull
-        @Size(min = 2, max = 140)
-        var descricao: String
-
-){
+        var descricao: String){
     constructor() :this("")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

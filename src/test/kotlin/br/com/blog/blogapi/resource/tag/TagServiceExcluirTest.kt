@@ -27,7 +27,7 @@ class `Teste do endpoint de exclusão Tags`() : AbstractTagServiceTest() {
     }
 
     @Test
-    fun `Quando ocorrer erro no servidr, retornar internalserver Error`(){
+    fun `Quando ocorrer erro no servidor, retornar 500`(){
         mockMvc.perform(MockMvcRequestBuilders.delete(urlConsulta.plus("-1"))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError)

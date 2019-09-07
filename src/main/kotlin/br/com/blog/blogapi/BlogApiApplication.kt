@@ -9,4 +9,3 @@ class BlogApiApplication
 fun main(args: Array<String>) {
 	runApplication<BlogApiApplication>(*args)
 }
-
